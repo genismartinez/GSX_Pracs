@@ -1,0 +1,23 @@
+73c73,74
+< max-bindings INTEGER ::= 2147483647
+---
+> -- PATCH by Josep M. Banus
+> -- max-bindings INTEGER ::= 2147483647
+100c101
+<             INTEGER (0..max-bindings),
+---
+>             INTEGER (0..2147483647),
+108,109c109,110
+<         non-repeaters   INTEGER (0..max-bindings),
+<         max-repetitions INTEGER (0..max-bindings),
+---
+>         non-repeaters   INTEGER (0..2147483647),
+>         max-repetitions INTEGER (0..2147483647),
+131c132,135
+< VarBindList ::= SEQUENCE (SIZE (0..max-bindings)) OF VarBind
+---
+> -- VarBindList ::= SEQUENCE (SIZE (0..2147483647)) OF VarBind
+> VarBindList ::= SEQUENCE (SIZE (0..2147483647)) {
+>     VarBind
+>     }
+

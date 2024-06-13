@@ -1,0 +1,24 @@
+zone "intranet.gsx" {
+    type master;
+    file "/var/cache/bind/db.intranet.gsx";
+    allow-update { key CLAU_DHCPDNS; };
+};
+
+zone "dmz.gsx" {
+    type master;
+    file "/var/cache/bind/db.dmz.gsx";
+    allow-update { key CLAU_DHCPDNS; };
+};
+
+zone "24.172.in-addr.arpa" {
+    type master;
+    file "/var/cache/bind/db.172.24.88";
+    allow-update { key CLAU_DHCPDNS; }
+};
+
+zone "88.18.198.in-addr.arpa" {
+    type master;
+    file "/var/cache/bind/db.198.18.88";
+    allow-update { key CLAU_DHCPDNS; } 
+};
+

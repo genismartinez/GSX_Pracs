@@ -1,0 +1,10 @@
+[Unit]
+Description=Servei de consultaSYSD
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/bin/consulta_paquet.sh
+
+[Install]
+WantedBy=multi-user.target

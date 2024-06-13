@@ -1,0 +1,21 @@
+# Dockerfile: dockerfile_gsx_prac5
+# Utilitzo la imatge base de Debian Bullseye slim
+FROM debian:bullseye-slim
+
+# Mantainer
+MAINTAINER Professor GSX
+
+# Afegim el repositori non-free a les fonts d'apt
+RUN echo "deb https://deb.debian.org/debian/ bullseye non-free" > /etc/apt/sources.list.d/non-free.list
+
+# Actualitzem les llistes de paquets
+RUN apt update
+
+# Instal·lem els paquets necessaris: rsyslog, snmp, snmpd i snmp-mibs-downloader
+RUN apt-get install -y --no-install-recommends rsyslog snmp snmpd snmp-mibs-downloader
+
+# Copiem el fitxer de diferència SNMPv2-PDU.diff a /root
+COPY SNMPv2-PDU.diff /root/
+
+# Apliquem el fitxer de diferència SNMPv2-PDU.diff al fitxer SNMPv2-PDU
+RUN patch /usr/share/snmp/mibs/ietf/SNMPv2-PDU < /root/SNMPv2-PDU.diff

@@ -1,0 +1,394 @@
+
+Iniciant proves...
+===================
+Comprovem que els daemons s'estan executant...
+---------------------------------------------
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                1111120             1111100             0                   09:23               ?                   00:00:00            /bin/bash
+systemd+            1112165             1111120             0                   09:24               ?                   00:00:00            /usr/sbin/zebra -d -A 127.0.0.1 -f /etc/quagga/zebra.conf
+systemd+            1112226             1111120             0                   09:24               ?                   00:00:00            /usr/sbin/ripd -d -A 127.0.0.1 -f /etc/quagga/ripd.conf
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                1111185             1111166             0                   09:23               ?                   00:00:00            /bin/bash
+systemd+            1112301             1111185             0                   09:25               ?                   00:00:00            /usr/sbin/zebra -d -A 127.0.0.1 -f /etc/quagga/zebra.conf
+systemd+            1112370             1111185             0                   09:25               ?                   00:00:00            /usr/sbin/ripd -d -A 127.0.0.1 -f /etc/quagga/ripd.conf
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                1111253             1111233             0                   09:23               ?                   00:00:00            /bin/bash
+systemd+            1112445             1111253             0                   09:25               ?                   00:00:00            /usr/sbin/zebra -d -A 127.0.0.1 -f /etc/quagga/zebra.conf
+systemd+            1112506             1111253             0                   09:25               ?                   00:00:00            /usr/sbin/ripd -d -A 127.0.0.1 -f /etc/quagga/ripd.conf
+
+Comprovant la taula d'encaminament...
+------------------------------------
+default via [35m172.17.0.1 [0mdev [36meth0 [0m
+[35m10.88.1.0/30 [0mdev [36mlink1_veth1 [0mproto kernel scope link src [35m10.88.1.1 [0m
+[35m10.88.2.0/30 [0mvia [35m10.88.1.2 [0mdev [36mlink1_veth1 [0mproto zebra metric 20 
+[35m10.88.3.0/30 [0mvia [35m10.88.4.1 [0mdev [36mlink4_veth2 [0mproto zebra metric 20 
+[35m10.88.4.0/30 [0mdev [36mlink4_veth2 [0mproto kernel scope link src [35m10.88.4.2 [0m
+[35m172.17.0.0/16 [0mdev [36meth0 [0mproto kernel scope link src [35m172.17.0.2 [0m
+------------------------------------
+[35m10.88.1.0/30 [0mdev [36mlink1_veth2 [0mproto kernel scope link src [35m10.88.1.2 [0m
+[35m10.88.2.0/30 [0mdev [36mlink2_veth1 [0mproto kernel scope link src [35m10.88.2.1 [0m
+[35m10.88.3.0/30 [0mvia [35m10.88.2.2 [0mdev [36mlink2_veth1 [0mproto zebra metric 20 
+[35m10.88.4.0/30 [0mvia [35m10.88.1.1 [0mdev [36mlink1_veth2 [0mproto zebra metric 20 
+------------------------------------
+[35m10.88.1.0/30 [0mvia [35m10.88.2.1 [0mdev [36mlink2_veth2 [0mproto zebra metric 20 
+[35m10.88.2.0/30 [0mdev [36mlink2_veth2 [0mproto kernel scope link src [35m10.88.2.2 [0m
+[35m10.88.3.0/30 [0mdev [36mlink3_veth1 [0mproto kernel scope link src [35m10.88.3.1 [0m
+[35m10.88.4.0/30 [0mvia [35m10.88.3.2 [0mdev [36mlink3_veth1 [0mproto zebra metric 20 
+------------------------------------
+[35m10.88.1.0/30 [0mvia [35m10.88.3.1 [0mdev [36mlink3_veth2 [0mproto zebra metric 20 
+[35m10.88.2.0/30 [0mvia [35m10.88.3.1 [0mdev [36mlink3_veth2 [0mproto zebra metric 20 
+[35m10.88.3.0/30 [0mdev [36mlink3_veth2 [0mproto kernel scope link src [35m10.88.3.2 [0m
+[35m10.88.4.0/30 [0mdev [36mlink4_veth1 [0mproto kernel scope link src [35m10.88.4.1 [0m
+
+Comprovant la configuració i la taula d'encaminament amb vtysh...
+-----------------------------------------------------------------
+Building configuration...
+
+Current configuration:
+!
+!
+interface eth0
+!
+interface link1_veth1
+!
+interface link4_veth2
+!
+interface lo
+!
+router rip
+ version 2
+ default-information originate
+ network 10.88.1.2/30
+ network 10.88.4.1/30
+ passive-interface eth0
+!
+ip forwarding
+!
+line vty
+!
+end
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, P - PIM, A - Babel, N - NHRP,
+       > - selected route, * - FIB route
+
+K>* 0.0.0.0/0 via 172.17.0.1, eth0
+C>* 10.88.1.0/30 is directly connected, link1_veth1
+R>* 10.88.2.0/30 [120/2] via 10.88.1.2, link1_veth1, 00:00:20
+R>* 10.88.3.0/30 [120/2] via 10.88.4.1, link4_veth2, 00:00:05
+C>* 10.88.4.0/30 is directly connected, link4_veth2
+C>* 127.0.0.0/8 is directly connected, lo
+C>* 172.17.0.0/16 is directly connected, eth0
+Routing Protocol is "rip"
+  Sending updates every 30 seconds with +/-50%, next due in 3 seconds
+  Timeout after 180 seconds, garbage collect after 120 seconds
+  Outgoing update filter list for all interface is not set
+  Incoming update filter list for all interface is not set
+  Default redistribution metric is 1
+  Redistributing:
+  Default version control: send version 2, receive version 2 
+    Interface        Send  Recv   Key-chain
+    link1_veth1      2     2      
+    link4_veth2      2     2      
+  Routing for Networks:
+    10.88.1.2/30
+    10.88.4.1/30
+  Routing Information Sources:
+    Gateway          BadPackets BadRoutes  Distance Last Update
+    10.88.1.2                0         0       120   00:00:10
+    10.88.4.1                0         0       120   00:00:05
+  Distance: (default is 120)
+-----------------------------------------------------------------
+Building configuration...
+
+Current configuration:
+!
+!
+interface link1_veth2
+!
+interface link2_veth1
+!
+interface lo
+!
+router rip
+ version 2
+ network 10.88.1.2/30
+ network 10.88.2.1/30
+!
+ip forwarding
+!
+line vty
+!
+end
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, P - PIM, A - Babel, N - NHRP,
+       > - selected route, * - FIB route
+
+C>* 10.88.1.0/30 is directly connected, link1_veth2
+C>* 10.88.2.0/30 is directly connected, link2_veth1
+R>* 10.88.3.0/30 [120/2] via 10.88.2.2, link2_veth1, 00:00:11
+R>* 10.88.4.0/30 [120/2] via 10.88.1.1, link1_veth2, 00:00:21
+C>* 127.0.0.0/8 is directly connected, lo
+Routing Protocol is "rip"
+  Sending updates every 30 seconds with +/-50%, next due in 13 seconds
+  Timeout after 180 seconds, garbage collect after 120 seconds
+  Outgoing update filter list for all interface is not set
+  Incoming update filter list for all interface is not set
+  Default redistribution metric is 1
+  Redistributing:
+  Default version control: send version 2, receive version 2 
+    Interface        Send  Recv   Key-chain
+    link1_veth2      2     2      
+    link2_veth1      2     2      
+  Routing for Networks:
+    10.88.1.2/30
+    10.88.2.1/30
+  Routing Information Sources:
+    Gateway          BadPackets BadRoutes  Distance Last Update
+    10.88.1.1                0         0       120   00:00:06
+    10.88.2.2                0         0       120   00:00:06
+  Distance: (default is 120)
+-----------------------------------------------------------------
+Building configuration...
+
+Current configuration:
+!
+!
+interface link2_veth2
+!
+interface link3_veth1
+!
+interface lo
+!
+router rip
+ version 2
+ network 10.88.2.1/30
+ network 10.88.3.2/30
+!
+ip forwarding
+!
+line vty
+!
+end
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, P - PIM, A - Babel, N - NHRP,
+       > - selected route, * - FIB route
+
+R>* 10.88.1.0/30 [120/2] via 10.88.2.1, link2_veth2, 00:00:12
+C>* 10.88.2.0/30 is directly connected, link2_veth2
+C>* 10.88.3.0/30 is directly connected, link3_veth1
+R>* 10.88.4.0/30 [120/2] via 10.88.3.2, link3_veth1, 00:00:06
+C>* 127.0.0.0/8 is directly connected, lo
+Routing Protocol is "rip"
+  Sending updates every 30 seconds with +/-50%, next due in 15 seconds
+  Timeout after 180 seconds, garbage collect after 120 seconds
+  Outgoing update filter list for all interface is not set
+  Incoming update filter list for all interface is not set
+  Default redistribution metric is 1
+  Redistributing:
+  Default version control: send version 2, receive version 2 
+    Interface        Send  Recv   Key-chain
+    link2_veth2      2     2      
+    link3_veth1      2     2      
+  Routing for Networks:
+    10.88.2.1/30
+    10.88.3.2/30
+  Routing Information Sources:
+    Gateway          BadPackets BadRoutes  Distance Last Update
+    10.88.2.1                0         0       120   00:00:12
+    10.88.3.2                0         0       120   00:00:06
+  Distance: (default is 120)
+-----------------------------------------------------------------
+Building configuration...
+
+Current configuration:
+!
+!
+interface link3_veth2
+!
+interface link4_veth1
+!
+interface lo
+!
+router rip
+ version 2
+ network 10.88.3.2/30
+ network 10.88.4.1/30
+!
+ip forwarding
+!
+line vty
+!
+end
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, P - PIM, A - Babel, N - NHRP,
+       > - selected route, * - FIB route
+
+R>* 10.88.1.0/30 [120/3] via 10.88.3.1, link3_veth2, 00:00:08
+R>* 10.88.2.0/30 [120/2] via 10.88.3.1, link3_veth2, 00:00:08
+C>* 10.88.3.0/30 is directly connected, link3_veth2
+C>* 10.88.4.0/30 is directly connected, link4_veth1
+C>* 127.0.0.0/8 is directly connected, lo
+Routing Protocol is "rip"
+  Sending updates every 30 seconds with +/-50%, next due in 20 seconds
+  Timeout after 180 seconds, garbage collect after 120 seconds
+  Outgoing update filter list for all interface is not set
+  Incoming update filter list for all interface is not set
+  Default redistribution metric is 1
+  Redistributing:
+  Default version control: send version 2, receive version 2 
+    Interface        Send  Recv   Key-chain
+    link3_veth2      2     2      
+    link4_veth1      2     2      
+  Routing for Networks:
+    10.88.3.2/30
+    10.88.4.1/30
+  Routing Information Sources:
+    Gateway          BadPackets BadRoutes  Distance Last Update
+    10.88.3.1                0         0       120   00:00:07
+  Distance: (default is 120)
+
+Comprovant les IPs i les rutes...
+--------------------------------
+1: [36mlo: [0m<LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback [33m00:00:00:00:00:00[0m brd [33m00:00:00:00:00:00[0m
+    inet [35m127.0.0.1[0m/8 scope host lo
+       valid_lft forever preferred_lft forever
+119: [36meth0@if120: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default 
+    link/ether [33m02:42:ac:11:00:02[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 0
+    inet [35m172.17.0.2[0m/16 brd [35m172.17.255.255 [0mscope global eth0
+       valid_lft forever preferred_lft forever
+122: [36mlink1_veth1@if121: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33m92:5f:f7:22:e6:e6[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 2
+    inet [35m10.88.1.1[0m/30 scope global link1_veth1
+       valid_lft forever preferred_lft forever
+127: [36mlink4_veth2@if128: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33mfa:d8:8f:b9:9e:6b[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 1
+    inet [35m10.88.4.2[0m/30 scope global link4_veth2
+       valid_lft forever preferred_lft forever
+--------------------------------
+1: [36mlo: [0m<LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback [33m00:00:00:00:00:00[0m brd [33m00:00:00:00:00:00[0m
+    inet [35m127.0.0.1[0m/8 scope host lo
+       valid_lft forever preferred_lft forever
+121: [36mlink1_veth2@if122: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33m62:50:3e:53:50:ff[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 0
+    inet [35m10.88.1.2[0m/30 scope global link1_veth2
+       valid_lft forever preferred_lft forever
+124: [36mlink2_veth1@if123: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33mae:61:12:ba:48:56[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 2
+    inet [35m10.88.2.1[0m/30 scope global link2_veth1
+       valid_lft forever preferred_lft forever
+--------------------------------
+1: [36mlo: [0m<LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback [33m00:00:00:00:00:00[0m brd [33m00:00:00:00:00:00[0m
+    inet [35m127.0.0.1[0m/8 scope host lo
+       valid_lft forever preferred_lft forever
+123: [36mlink2_veth2@if124: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33md2:49:03:1e:25:e6[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 0
+    inet [35m10.88.2.2[0m/30 scope global link2_veth2
+       valid_lft forever preferred_lft forever
+126: [36mlink3_veth1@if125: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33m6e:78:e3:16:f9:55[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 2
+    inet [35m10.88.3.1[0m/30 scope global link3_veth1
+       valid_lft forever preferred_lft forever
+--------------------------------
+1: [36mlo: [0m<LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback [33m00:00:00:00:00:00[0m brd [33m00:00:00:00:00:00[0m
+    inet [35m127.0.0.1[0m/8 scope host lo
+       valid_lft forever preferred_lft forever
+125: [36mlink3_veth2@if126: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33mca:e4:e7:cd:fb:2e[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 0
+    inet [35m10.88.3.2[0m/30 scope global link3_veth2
+       valid_lft forever preferred_lft forever
+128: [36mlink4_veth1@if127: [0m<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state [32mUP [0mgroup default qlen 1000
+    link/ether [33m86:52:ce:75:46:ee[0m brd [33mff:ff:ff:ff:ff:ff[0m link-netnsid 2
+    inet [35m10.88.4.1[0m/30 scope global link4_veth1
+       valid_lft forever preferred_lft forever
+
+Comprovant connectivitat cap a 10.88.3.2 des de R1...
+----------------------------------------------------
+PING 10.88.3.2 (10.88.3.2) 56(84) bytes of data.
+64 bytes from 10.88.3.2: icmp_seq=1 ttl=64 time=0.105 ms
+
+--- 10.88.3.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.105/0.105/0.105/0.000 ms
+traceroute to 10.88.3.2 (10.88.3.2), 30 hops max, 60 byte packets
+ 1  10.88.3.2  0.044 ms  0.027 ms  0.009 ms
+traceroute to 10.88.3.2 (10.88.3.2), 30 hops max, 60 byte packets
+ 1  10.88.3.2  0.067 ms  0.025 ms  0.010 ms
+
+Comprovant connectivitat cap a 10.88.4.2 des de R2...
+----------------------------------------------------
+PING 10.88.4.2 (10.88.4.2) 56(84) bytes of data.
+64 bytes from 10.88.4.2: icmp_seq=1 ttl=64 time=0.105 ms
+
+--- 10.88.4.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.105/0.105/0.105/0.000 ms
+traceroute to 10.88.4.2 (10.88.4.2), 30 hops max, 60 byte packets
+ 1  10.88.4.2  0.140 ms  0.045 ms  0.010 ms
+traceroute to 10.88.4.2 (10.88.4.2), 30 hops max, 60 byte packets
+ 1  10.88.4.2  0.051 ms  0.007 ms  0.027 ms
+
+Comprovant connectivitat cap a 10.88.1.2 des de R3...
+----------------------------------------------------
+PING 10.88.1.2 (10.88.1.2) 56(84) bytes of data.
+64 bytes from 10.88.1.2: icmp_seq=1 ttl=64 time=0.073 ms
+
+--- 10.88.1.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.073/0.073/0.073/0.000 ms
+traceroute to 10.88.1.2 (10.88.1.2), 30 hops max, 60 byte packets
+ 1  10.88.1.2  0.079 ms  0.013 ms  0.008 ms
+traceroute to 10.88.1.2 (10.88.1.2), 30 hops max, 60 byte packets
+ 1  10.88.1.2  0.077 ms  0.008 ms  0.014 ms
+
+Comprovant connectivitat cap a 10.88.2.1 des de R4...
+----------------------------------------------------
+PING 10.88.2.1 (10.88.2.1) 56(84) bytes of data.
+64 bytes from 10.88.2.1: icmp_seq=1 ttl=63 time=0.086 ms
+
+--- 10.88.2.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.086/0.086/0.086/0.000 ms
+traceroute to 10.88.2.1 (10.88.2.1), 30 hops max, 60 byte packets
+ 1  10.88.3.1  0.047 ms  0.005 ms  0.003 ms
+ 2  10.88.2.1  0.011 ms  0.005 ms  0.004 ms
+traceroute to 10.88.2.1 (10.88.2.1), 30 hops max, 60 byte packets
+ 1  10.88.3.1  0.033 ms  0.006 ms  0.008 ms
+ 2  10.88.2.1  0.018 ms  0.009 ms  0.008 ms
+
+Baixem la interfície link1_veth2 al R2...
+----------------------------------------
+10.88.3.2 via 10.88.4.1 dev link4_veth2 src 10.88.4.2 uid 0 
+    cache 
+
+Comprovant la nova ruta després de la caiguda al R2...
+----------------------------------------------------
+traceroute to 10.88.2.2 (10.88.2.2), 30 hops max, 60 byte packets
+ 1  172.17.0.1  0.104 ms  0.026 ms  0.023 ms
+ 2  10.0.2.2  4.523 ms  1.663 ms  1.346 ms
+ 3  * * *
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  * * *
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  * * *
+17  * * *
+18  * * *
+19  10.88.2.2  0.353 ms  0.011 ms  0.060 ms
+traceroute to 10.88.2.1 (10.88.2.1), 30 hops max, 60 byte packets
+ 1  10.88.3.1  0.024 ms  0.004 ms  0.002 ms
+ 2  10.88.2.1  0.012 ms  0.007 ms  0.006 ms
+
+Proves completades.
+===================

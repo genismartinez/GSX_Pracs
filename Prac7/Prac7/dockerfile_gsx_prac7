@@ -1,0 +1,13 @@
+FROM debian:buster-slim
+
+MAINTAINER Genis Martinez
+
+RUN apt-get update && apt-get install -y \
+    initscripts \
+    quagga-ripd \
+    iputils-ping \
+    traceroute
+
+ADD ./prac7_config_rip.sh /root
+WORKDIR /root
+CMD ["/bin/bash"]

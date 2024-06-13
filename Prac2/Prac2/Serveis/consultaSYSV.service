@@ -1,0 +1,55 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          consultaSYSV
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start consulta script at boot time
+# Description:       Enable service provided by consulta script.
+### END INIT INFO
+
+# Path absolut de l'arxiu a executar
+SCRIPT="/home/milax/Escriptori/GSX_Labs/Prac2/Serveis/consulta_paquet_modificat.sh"
+
+# Funció per comprovar si l'arxiu /tmp/paquets existeix i no està buit
+check_file() {
+    if [[ -f /tmp/paquets ]]; then
+        return 0  # L'arxiu existeix i té contingut
+    else
+        return 1  # L'arxiu no existeix o està buit
+    fi
+}
+
+case "$1" in
+    start)
+        # Comprovem si s'han pasat paràmetres al script
+        if [[ $# -eq 1 ]]; then
+            # No s'han passat arguments
+            if check_file; then
+                # L'arxiu /tmp/paquets existeix i té contingut
+                $SCRIPT $(cat /tmp/paquets)
+            else
+                # L'arxiu /tmp/paquets no existeix o està buit
+                logger -f "El fitxer /tmp/paquets no existeix o és buit."
+            fi
+        else
+            # S'han passat arguments al script
+            shift
+            $SCRIPT "$@"
+        fi
+        exit 0
+        ;;
+    stop)
+        # No es necessari fer res per parar el servei
+        exit 0
+        ;;
+    *)
+        echo "Ús: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

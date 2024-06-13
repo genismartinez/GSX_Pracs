@@ -1,0 +1,116 @@
+registered debug token usm, 1
+registered debug token usm.user, 1
+Turning on AgentX master support.
+usmUser: created a new user gsxViewer at 80 00 1F 88 80 22 51 0C 54 85 54 3A 66 00 00 00 
+00 
+usmUser: created a new user gsxAdmin at 80 00 1F 88 80 22 51 0C 54 85 54 3A 66 00 00 00 
+00 
+NET-SNMP version 5.9
+Connection from UDP: [198.18.179.179]:55856->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:55856->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxAdmin
+usm: Verification succeeded.
+usm: USM processing completed.
+usm: USM processing has begun (offset 55)
+usm: Encryption successful.
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:57001->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:57001->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer
+usm: Verification succeeded.
+usm: USM processing completed.
+usm: USM processing has begun (offset 55)
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:58106->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:58106->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer
+usm: Verification failed.
+Authentication failed for gsxViewer
+usm: USM processing has begun (offset 56)
+usm: getting user gsxViewer
+usm: match on user gsxViewer
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:32835->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:32835->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer
+usm: Verification failed.
+Authentication failed for gsxViewer
+usm: USM processing has begun (offset 56)
+usm: getting user gsxViewer
+usm: match on user gsxViewer
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:40936->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:40936->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxAdmin
+usm: Verification succeeded.
+usm: USM processing completed.
+usm: USM processing has begun (offset 55)
+usm: Encryption successful.
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:40093->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:40093->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer
+usm: Verification succeeded.
+usm: USM processing completed.
+usm: USM processing has begun (offset 55)
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:46157->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:46157->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer
+usm: Verification failed.
+Authentication failed for gsxViewer
+usm: USM processing has begun (offset 56)
+usm: getting user gsxViewer
+usm: match on user gsxViewer
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:33376->[198.18.88.254]:161
+usm: USM processing begun...
+usm: Unknown Engine ID.
+usm: USM processing has begun (offset 56)
+usm: getting user 
+usm: USM processing completed.
+Connection from UDP: [198.18.179.179]:33376->[198.18.88.254]:161
+usm: USM processing begun...
+usm: match on user gsxViewer

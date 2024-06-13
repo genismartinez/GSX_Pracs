@@ -1,0 +1,77 @@
+Monitorització amb vmstat abans de l'estrès:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 5  0 304056 6902472  22404 382676   29  190   137  1719  278  301  3  3 94  0  0
+ 1  0 304056 6901196  22404 383836    8    0     8     4  927  689  7  3 89  1  0
+ 0  0 304056 6914048  22404 383836    0    0     0   388 1510 1366  3  3 94  0  0
+ 0  0 304056 6913796  22404 385132   60    0    60    16 1574 2177 11  5 83  1  0
+ 0  0 304056 6914028  22412 385136    0    0     0   136  963  661  2  1 97  0  0
+
+Monitorització amb iostat abans de l'estrès:
+Linux 5.10.0-21-amd64 (casa) 	20/5/24 	_x86_64_	(3 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2,78    0,05    3,05    0,40    0,00   93,72
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda             13,71    369,42    15,13  52,46    4,25    26,94   41,77   4636,83    93,80  69,19    5,48   111,01    0,00      0,00     0,00   0,00    0,00     0,00    0,23    9,22    0,29   4,89
+sdb              0,01      0,14     0,00   0,00    0,84    20,21    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           7,37    0,92    3,23    0,46    0,00   88,02
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda              1,00      4,00     0,00   0,00    8,00     4,00    5,00    100,00    20,00  80,00    1,00    20,00    0,00      0,00     0,00   0,00    0,00     0,00    4,00    1,00    0,02   2,00
+sdb              0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4,67    0,78    3,11    0,00    0,00   91,44
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda              0,00      0,00     0,00   0,00    0,00     0,00    1,00      4,00     0,00   0,00    1,00     4,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,40
+sdb              0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
+
+Estrès de la CPU, Memòria, Disc i Creació de Fils:
+stress-ng: info:  [1060212] dispatching hogs: 512 cpu, 256 vm, 256 hdd, 8192 fork
+stress-ng: info:  [1060212] successful run completed in 323.91s (5 mins, 23.91 secs)
+
+Monitorització amb vmstat durant l'estrès:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 4  0 319320 7171936   4744 225972   31  201   139  2794  286  311  3  3 93  1  0
+ 0  0 319320 7143948   4744 237424    0    0  6880     4 1900 1692 15 10 71  4  0
+ 0  0 319320 7141624   4744 237448    0    0     4     0 1194  494  3  1 96  0  0
+ 1  0 319320 7140924   4744 237468    0    0    20     0 1671 2561  6  8 86  0  0
+ 0  0 319320 7132844   4744 244712   16    0  5984     0 1908 2144 18  8 69  5  0
+
+Monitorització amb iostat durant l'estrès:
+Linux 5.10.0-21-amd64 (casa) 	20/5/24 	_x86_64_	(3 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           3,30    0,08    3,38    0,51    0,00   92,73
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda             14,04    371,85    15,74  52,84    4,31    26,48   51,66   7454,64    95,61  64,92    5,48   144,30    0,00      0,00     0,00   0,00    0,00     0,00    0,24    9,20    0,35   5,89
+sdb              0,01      0,14     0,00   0,00    0,84    20,21    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          26,78    1,26   12,55    1,26    0,00   58,16
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda             30,69    617,82     0,00   0,00    4,35    20,13    0,99      3,96     0,00   0,00    8,00     4,00    0,00      0,00     0,00   0,00    0,00     0,00    1,98    4,00    0,15   7,52
+sdb              0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          13,50    0,36    8,03    0,36    0,00   77,74
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+sda              0,00      0,00     0,00   0,00    0,00     0,00  104,95    752,48     1,98   1,85    1,14     7,17    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,12   2,77
+sdb              0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00      0,00     0,00   0,00    0,00     0,00    0,00    0,00    0,00   0,00
+
+
